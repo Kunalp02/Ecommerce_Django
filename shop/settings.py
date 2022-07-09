@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'accounts',
+    'carts',
     'category',
     'store'
 ]
@@ -67,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processors.menu_links',
+                'carts.context_processors.counter',
+
             ],
         },
     },
@@ -123,10 +126,13 @@ USE_TZ = True
 
 import os
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR /'static'
+# STATIC_ROOT = BASE_DIR /'static'
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static"),
 # ]
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
 MEDIA_URL   = "/media/"
 MEDIA_ROOT = BASE_DIR /'media'
 
