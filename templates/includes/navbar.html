@@ -40,16 +40,16 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'store' %}">All Products</a>
                     {% for category in links %}
-                    <a class="dropdown-item" href="{{category.get_url}}">{{category.category_name}}</a>
+                        <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
                     {% endfor %}
                 </div>
             </div>  <!-- category-wrap.// -->
         </div> <!-- col.// -->
-        <a href="{% url 'store' %}" class="btn btn-outline-dark">Store</a>
+        <a href="{% url 'store'%}" class="btn btn-outline-dark">Store</a>
         <div class="col-lg  col-md-6 col-sm-12 col">
-            <form action="#" class="search">
+            <form action="{% url 'search' %}" class="search" method="GET">
                 <div class="input-group w-100">
-                    <input type="text" class="form-control" style="width:60%;" placeholder="Search">
+                    <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="keyword">
                     
                     <div class="input-group-append">
                       <button class="btn btn-dark" type="submit">
@@ -62,12 +62,22 @@
         <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
                         <div class="widget-header">
+                        {% if user.id is None %}
                             <small class="title text-muted">Welcome guest!</small>
                             <div> 
                                 <a href="{% url 'login' %}">Sign in</a> <span class="dark-transp"> | </span>
                                 <a href="{% url 'register' %}"> Register</a>
                             </div>
                         </div>
+                        {% else %}
+                        {% comment %} <div class="widget-header">
+                            <small class="title text-muted">Welcome {{ user.first_name }}!</small>
+                            <div> 
+                                <a href="{% url 'dashboard' %}">Dashboard</a> <span class="dark-transp"> | </span>
+                                <a href="{% url 'logout' %}">Logout</a>
+                            </div>
+                        </div> {% endcomment %}
+                        {% endif %}
                         <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
                             <span class="badge badge-pill badge-danger notify">{{cart_count}}</span>
@@ -78,7 +88,7 @@
         </div> <!-- container.// -->
     </section> <!-- header-main .// -->
     
-
+    
     
     
     </header> <!-- section-header.// -->
