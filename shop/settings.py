@@ -69,7 +69,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processors.menu_links',
                 'carts.context_processors.counter',
-
             ],
         },
     },
@@ -135,6 +134,16 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL   = "/media/"
 MEDIA_ROOT = BASE_DIR /'media'
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.INFO:  'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}
+
 
 
 
