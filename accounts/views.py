@@ -117,7 +117,7 @@ def forgotPassword(request):
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
             messages.success(
-                request, 'Password reset email has been sent your email address')
+                request, 'Password reset email has been sent to your email address')
             return redirect('login')
         else:
             messages.error(request, 'Account does not exist')
@@ -129,7 +129,7 @@ def forgotPassword(request):
 def resetpassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-        user = Account.default_manager.get(pk=uid)
+        user = Account._default_manager.get(pk=uid)
     except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
         user = None
 
