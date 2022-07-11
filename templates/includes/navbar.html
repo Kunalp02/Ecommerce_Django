@@ -69,14 +69,14 @@
                                 <a href="{% url 'register' %}"> Register</a>
                             </div>
                         </div>
-                        {% else %}
-                        {% comment %} <div class="widget-header">
+                         {% else %} 
+                        <div class="widget-header">
                             <small class="title text-muted">Welcome {{ user.first_name }}!</small>
                             <div> 
-                                <a href="{% url 'dashboard' %}">Dashboard</a> <span class="dark-transp"> | </span>
+                                <a href="#">Dashboard</a> <span class="dark-transp"> | </span>
                                 <a href="{% url 'logout' %}">Logout</a>
                             </div>
-                        </div> {% endcomment %}
+                        </div>
                         {% endif %}
                         <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
                             <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
