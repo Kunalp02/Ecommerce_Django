@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'accounts',
     'carts',
     'category',
-    'store'
+    'store',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -163,3 +164,8 @@ EMAIL_HOST_PASSWORD = 'duid idbe tfzg vcrd'
 EMAIL_HOST ='smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True   
+
+
+
+RAZORPAY_KEY_ID = 'rzp_test_cRHj4EBjQxdtvV'
+RAZORPAY_KEY_SECRET = 'j61L3q6VMZdZmYc0FBmHnWTW'
