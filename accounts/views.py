@@ -13,7 +13,7 @@ from django.core.mail import EmailMessage
 
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
-
+import requests
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -61,22 +61,38 @@ def login(request):
 
         if user is not None:
             try:
-                print("Entering inside try block")
                 cart = Cart.objects.get(cart_id=_cart_id(request))
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-                print(is_cart_item_exists)
+
+                 # Get the cart items from the user to access his product variations
+                user_cart_item = CartItem.objects.filter(user=user)
+                # print(user_cart_item)
+                cart_item = CartItem.objects.filter(cart=cart)
+                # print(cart_item)
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart = cart)
-                    print(cart_item)
+                    user_cart_item = CartItem.objects.filter(user=user)
 
                     for item in cart_item:
                         item.user = user
                         item.save()
+
             except:
                 print("Entering inside except block")
                 pass
             auth.login(request, user)
-            # messages.success(request, 'You are now logged in.')
+            messages.success(request, 'You are now logged in.')
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utills.urlparse(url).query
+                params = dict(x.split('=') for x in query.split('&'))
+                
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+                return redirect('dashboard')
+            except:
+                pass  
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid login credentials')
