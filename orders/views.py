@@ -7,6 +7,10 @@ from .forms import OrderForm
 import datetime
 from .models import Order
 
+def payments(request):
+    return render(request, 'orders/payments.html')
+
+
 
 def place_order(request, total = 0, quantity = 0):
     current_user = request.user    
@@ -31,9 +35,9 @@ def place_order(request, total = 0, quantity = 0):
         form = OrderForm(request.POST)
         if form.is_valid():
             data = Order()
+            data.user = current_user
             data.first_name = form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
-            data.user = current_user
             data.phone = form.cleaned_data['phone']
             data.email = form.cleaned_data['email']
             data.address_line_1 = form.cleaned_data['address_line_1']
@@ -59,7 +63,14 @@ def place_order(request, total = 0, quantity = 0):
             data.order_number = order_number
             data.save()
 
-            return redirect('checkout')
-
-    else:
-        return redirect('checkout')
+            order = order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            context = {
+                'order':order,
+                'cart_items':cart_items,
+                'total' : total,
+                'grand_total':grand_total,
+                'tax': tax,
+            }
+            return render(request,'orders/payments.html', context)
+    
+    return redirect('checkout')
