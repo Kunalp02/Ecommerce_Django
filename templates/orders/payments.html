@@ -16,6 +16,11 @@
                 <div class="card-body">
                   <p class="card-text">{{order.full_name}}</p>
                   <p class="card-text">{{order.full_address}}</p>
+                  <p class="card-text">{{order.city}} {{order.state}}</p>
+                  <p class="card-text">{{order.country}}</p>
+                  {% if order.order_note %}
+                        <b> Order Note:</b> {{order.order_note}}
+                  {% endif %}
                 </div>
             </div>
             <div class="card">
@@ -52,7 +57,7 @@
                 <p class="text-center mb-3">
                     <img src="./images/misc/payments.png" height="26">
                 </p>
-                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Make Payment </a>
+                <a href="{% url 'payments' %}" class="btn btn-primary btn-block"> Make Payment </a>
             </div> <!-- card-body.// -->
             </div> <!-- card.// -->
     
@@ -64,7 +69,6 @@
     
     </div> <!-- container .//  -->
     </section>
-
 
 {% endblock content %}
 
