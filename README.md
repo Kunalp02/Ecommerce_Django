@@ -5,5 +5,6 @@
 # 2) activate it "file_name/Scripts/activate"
 # 3) To install all required packages "pip install -r requirements.txt"
 # 4) pip install django, Pillow
+# 5) python mange.py makemigrations and python manage.py migrate
 # 4) To run the project on local host "python manage.py runserver"
 
