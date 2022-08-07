@@ -38,8 +38,6 @@ def place_order(request, total = 0, quantity = 0): # order_payment
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
-        x = form.is_valid()
-        print(x)
         print(form.errors)
         if form.is_valid(): 
             data = Order()
@@ -67,10 +65,9 @@ def place_order(request, total = 0, quantity = 0): # order_payment
             mt = int(datetime.date.today().strftime('%m'))
             d = datetime.date(yr,mt,dt)
             current_date = d.strftime("%Y%m%d") #20210305
-
-            # order_number = current_date + str(data.id)
-            # data.order_number = order_number
-            # data.save()
+            order_number = current_date + str(data.id)
+            data.order_number = order_number
+            data.save()
             # order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
             # context = {
             #     'order' : order,
@@ -83,15 +80,14 @@ def place_order(request, total = 0, quantity = 0): # order_payment
             
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
             razorpay_order = client.order.create(
-                {"amount": int(grand_total) * 100, "currency": "INR", "payment_capture": "1"}
+                {"amount": int(grand_total) * 100, "currency": "INR", "payment_capture": "0"}
             )
             # order = Order.objects.create(
             #     name=name, amount=amount, provider_order_id=razorpay_order["id"]
             # )
-            order_number = razorpay_order["id"]
-            data.order_number = order_number
-            data.save()
             order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            order.razorpay_order_id = razorpay_order["id"]
+            order.save()
             return render(
                 request,
                 "orders/payments.html",
@@ -104,6 +100,7 @@ def place_order(request, total = 0, quantity = 0): # order_payment
                     'tax' : tax,
                     'grand_total' : grand_total, 
                     'amount' : grand_total * 100,
+                    'order_id' : razorpay_order["id"],
                 },
             )
 

@@ -20,7 +20,6 @@ class Payment(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    # payment_id = models.CharField(max_length=100, null=False, blank=False)
     order_number = models.CharField(max_length=40, null=False, blank=False)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -44,7 +43,10 @@ class Order(models.Model):
                                 blank=False,
                                 null=False,
                                 )
-    signature_id = models.CharField(max_length=128, null=False, blank=False)
+    razorpay_payment_id = models.CharField(max_length=128, null=True, blank=True)
+    razorpay_signature_id = models.CharField(max_length=128, null=True, blank=True)
+    razorpay_order_id = models.CharField(max_length=128, null=True, blank=True)
+
     
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
