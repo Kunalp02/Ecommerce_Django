@@ -16,9 +16,9 @@ def payments(request):
     return render(request, 'orders/payments.html')
 
 
-
 def place_order(request, total = 0, quantity = 0): # order_payment
-    current_user = request.user    
+    current_user = request.user 
+    print(current_user)   
     #if cart items less than zero or equal to zero, then redirect back to shop
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
@@ -68,44 +68,49 @@ def place_order(request, total = 0, quantity = 0): # order_payment
             d = datetime.date(yr,mt,dt)
             current_date = d.strftime("%Y%m%d") #20210305
 
-            order_number = current_date + str(data.id)
-            data.order_number = order_number
-            data.save()
-            print(order_number)
-            print(data.order_total)
+            # order_number = current_date + str(data.id)
+            # data.order_number = order_number
+            # data.save()
+            # order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            # context = {
+            #     'order' : order,
+            #     'cart_items' : cart_items,
+            #     'total' : total,
+            #     'tax' : tax,
+            #     'grand_total' : grand_total, 
+            # }
+            # return render(request, 'orders/payments.html', context)
             
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-            razorpay_order = client.order.create({"amount": int(grand_total) * 100, "currency": "INR", "payment_capture": "1"})
-            data = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
-            print("Order object")
-            print(data.order_number)
-            data.order_number = razorpay_order["id"]
-            # order = Order.objects.create(first_name=data.first_name, order_total=(grand_total*100), order_number=order_number)
-            data.save() 
-            # context = {
-            #     'order':order,
-            #     'cart_items':cart_items,
-            #     'total' : total,
-            #     'grand_total':grand_total,
-            #     'tax': tax,
-            # }
-            # return render(request,'orders/payments.html', context)
-            print("Razorpay order id")
-            print(razorpay_order["id"])
+            razorpay_order = client.order.create(
+                {"amount": int(grand_total) * 100, "currency": "INR", "payment_capture": "1"}
+            )
+            # order = Order.objects.create(
+            #     name=name, amount=amount, provider_order_id=razorpay_order["id"]
+            # )
+            order_number = razorpay_order["id"]
+            data.order_number = order_number
+            data.save()
+            order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
             return render(
-            request,
-            "orders/sample_payments.html",
-            {
-                "callback_url": "http://" + "127.0.0.1:8000" + "/razorpay/callback/",
-                "razorpay_key": settings.RAZORPAY_KEY_ID,
-                "data": data,
-                # 'cart_items':cart_items,
-                # 'total' : total,
-                'grand_total':int(grand_total)*100,
-                # 'tax': tax,
-            },
-        )
+                request,
+                "orders/payments.html",
+                {
+                    "callback_url": "http://" + "127.0.0.1:8000" + "/razorpay/callback/",
+                    "razorpay_key": settings.RAZORPAY_KEY_ID,
+                    "order": order,
+                    'cart_items' : cart_items,
+                    'total' : total,
+                    'tax' : tax,
+                    'grand_total' : grand_total, 
+                    'amount' : grand_total * 100,
+                },
+            )
+
     else:
         return render(request, 'checkout.html')
+
+
+
 
 

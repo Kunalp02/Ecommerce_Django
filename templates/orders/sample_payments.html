@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <form method="POST">
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
@@ -7,16 +8,17 @@
         key: "{{razorpay_key}}",
         amount: "{{grand_total}}", 
         currency: "INR",
-        name: "{{data.full_name}}",
+        name: "{{order.full_name}}",
         description: "Test Transaction",
         image: "https://imgur.com/NOWiBu9",
         order_id: "{{data.order_number}}",
         callback_url: "{{callback_url}}",
         redirect: true,
+        current_user = "{{current_user}}"
         prefill: {
-            "name": "{{data.full_name}}",
-            "email": "{{data.email}}",
-            "contact": "{{data.phone}}"
+            "name": "{{order.full_name}}",
+            "email": "{{order.email}}",
+            "contact": "{{order.phone}}"
         },
         notes: {
             "address": "Razorpay Corporate Office"
@@ -30,4 +32,7 @@
     </script>
     <input type="hidden" custom="Hidden Element" name="hidden">
 </form>
+
+
+
 {% endblock %}

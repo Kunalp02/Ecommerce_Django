@@ -1,8 +1,7 @@
 {% block content %}
-<div class="text-center" style="margin-top:20%">
+<div class="d-flex align-items-center justify-content-center" style="margin-top:20%">
     {% if status == "Success" %}
-    <h2>THANKS YOUR PAYMENT HAS BEEN RECEIVED</h2>
-    
+    <h2 class="text-center">THANKS YOUR PAYMENT HAS BEEN RECEIVED</h2>
     {% else %}
     {{reason}}
     {{description}}

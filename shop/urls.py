@@ -15,5 +15,5 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('razorpay/callback/', views.callback, name="callback"),
 
-]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

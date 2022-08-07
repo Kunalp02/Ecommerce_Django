@@ -151,11 +151,6 @@ MESSAGE_TAGS = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST_USER = 'kunalpatil970730@gmail.com'    # Your email
-# EMAIL_HOST_PASSWORD = 'xvjo tedl nkiu fhda'    #Give Password here
-
-# EMAIL_HOST_USER = 'cybercode143@gmail.com'    # Your email
-# EMAIL_HOST_PASSWORD = 'xvjo tedl nkiu fhda'    #Give Password here
 
 
 EMAIL_HOST_USER = 'cybercode143@gmail.com'    # Your email
@@ -167,5 +162,5 @@ EMAIL_USE_TLS = True
 
 
 
-RAZORPAY_KEY_ID = 'rzp_test_cRHj4EBjQxdtvV'
-RAZORPAY_KEY_SECRET = 'j61L3q6VMZdZmYc0FBmHnWTW'
+RAZORPAY_KEY_ID = 'rzp_test_Ksk9ouRYSb7KYU'
+RAZORPAY_KEY_SECRET = 'GysSGyVGLQ9DkJNSDEzBDbUI'

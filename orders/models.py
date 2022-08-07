@@ -7,7 +7,7 @@ from .constants import PaymentStatus
 
 class Payment(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
-    # payment_id = models.CharField(max_length=100, null=False, blank=False)
+    payment_id = models.CharField(max_length=100, null=False, blank=False)
     payment_method = models.CharField(max_length=100)
     amount_paid = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
@@ -19,8 +19,8 @@ class Payment(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
-    # payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    payment_id = models.CharField(max_length=100, null=False, blank=False)
+    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
+    # payment_id = models.CharField(max_length=100, null=False, blank=False)
     order_number = models.CharField(max_length=40, null=False, blank=False)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)

@@ -21,6 +21,7 @@ def add_cart(request, product_id):
 
     #if the user is authenticated
     if current_user.is_authenticated:
+        print("add cart user is authenticated")
         try:
             cart = Cart.objects.get(cart_id=_cart_id(request))
         except Cart.DoesNotExist:
@@ -81,6 +82,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
 
         for cart_item in cart_items:
+            print("cart for ", cart_items)
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
         tax = (2 * total)/100 
@@ -135,11 +137,22 @@ def checkout(request, total=0, quantity=0, cart_items=None):
         grand_total = 0
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            print("checkout if")
+            print(cart_items)
         else:
+            print("checkout else case")
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_items = CartItem.objects.filter(cart=cart, is_active=True)
 
+            # print("else")
+            # print(cart_items)
+
+        # for cart_item in cart_items:
+            
+
         for cart_item in cart_items:
+            print("checkout for")
+            print(cart_items)
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
         tax = (2 * total)/100 
