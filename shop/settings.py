@@ -153,8 +153,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 
 
-EMAIL_HOST_USER = 'cybercode143@gmail.com'    # Your email
-EMAIL_HOST_PASSWORD = 'hzsq gskl jgtg ypfu'
+EMAIL_HOST_USER =    # Your email
+EMAIL_HOST_PASSWORD = 
 
 
 EMAIL_HOST ='smtp.gmail.com'
@@ -163,5 +163,5 @@ EMAIL_USE_TLS = True
 
 
 
-RAZORPAY_KEY_ID = 'rzp_test_Ksk9ouRYSb7KYU'
-RAZORPAY_KEY_SECRET = 'GysSGyVGLQ9DkJNSDEzBDbUI'
+RAZORPAY_KEY_ID = 
+RAZORPAY_KEY_SECRET = 
