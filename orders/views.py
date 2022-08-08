@@ -5,14 +5,11 @@ from .import views
 from carts.models import CartItem
 from .forms import OrderForm
 import datetime
-from .models import Order, Payment
+from .models import Order
 import razorpay
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
-from orders.constants import PaymentStatus
-# import hashlib
-import hmac
 
 
 def payments(request):
@@ -71,7 +68,6 @@ def place_order(request, total = 0, quantity = 0): # order_payment
             order_number = current_date + str(data.id)
             data.order_number = order_number
             data.save()
-
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
             razorpay_order = client.order.create(
                 {"amount": int(grand_total) * 100, "currency": "INR", "payment_capture": "0"}
@@ -86,7 +82,7 @@ def place_order(request, total = 0, quantity = 0): # order_payment
                 request,
                 "orders/payments.html",
                 {
-                    "callback_url": "http://" + "127.0.0.1:8000" + "orders/razorpay/callback/",
+                    "callback_url": "http://" + "127.0.0.1:8000" + "/razorpay/callback/",
                     "razorpay_key": settings.RAZORPAY_KEY_ID,
                     "order": order,
                     'cart_items' : cart_items,
@@ -101,61 +97,8 @@ def place_order(request, total = 0, quantity = 0): # order_payment
     else:
         return render(request, 'checkout.html')
 
-
-
-
-
-@csrf_exempt
-def callback(request):
-    # only accept POST request.
-    if request.method == "POST":
-           
-            # get the required parameters from post request.
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
- 
-            # verify the payment signature.
-            result = client.utility.verify_payment_signature(
-                params_dict)
-            print(result)
-           
-       
-            if result is not None:
-                order = Order.objects.get(razorpay_order_id = razorpay_order_id)
-                amount = order.order_total * 100  # Rs. 200
-                # capture the payemt
-                client.payment.capture(payment_id, amount)
-                order.status = PaymentStatus.SUCCESS
-                payment = Payment(user=order.user, payment_id = payment_id, payment_method='razorpay', amount_paid = order.order_total, status=order.status)
-                payment.save()
-                order.payment = payment
-                order.razorpay_order_id = razorpay_order_id
-                order.razorpay_payment_id = payment_id
-                order.razorpay_signature_id = signature
-                order.is_ordered = True
-                order.save()
-                # render success page on successful caputre of payment
-                return render(request, 'orders/payments.html')
-                order.status = PaymentStatus.FAILURE
-                # if there is an error while capturing payment.
-                return render(request, 'orders/paymentfail.html')
-            else:
-                order.status = PaymentStatus.FAILURE
-                # if signature verification fails.
-                return render(request, 'orders/paymentfail.html')
- 
-            # if we don't find the required parameters in POST data
-    else:
-       # if other than POST request is made.
-        return HttpResponseBadRequest()
-
-
+def order_complete(request):
+    return render(request, 'orders/order_complete.html')
 
 
 
