@@ -17,6 +17,7 @@ client = razorpay.Client(
 
 
 def home(request):
+    print(request.path)
     products = Product.objects.all().filter(is_available=True)
     context = {
         'products' : products,
@@ -29,7 +30,7 @@ def home(request):
 def callback(request):
     # only accept POST request.
     if request.method == "POST":
-           
+        
             # get the required parameters from post request.
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')
@@ -61,8 +62,13 @@ def callback(request):
                     order.razorpay_signature_id = signature
                     order.is_ordered = True
                     order.save()
+
                     # render success page on successful caputre of payment
-                    return HttpResponseRedirect("http://" + "127.0.0.1:8000" + "/orders/order_complete")
+                    host = request.META['HTTP_HOST']
+                    print(host)
+                    redirect_url = '/orders/order_complete/'
+                    print(f"'http://' + {host} + {redirect_url} + '?order_number=' + {order.order_number} + '&payment_id='+ {payment.payment_id}")
+                    return HttpResponseRedirect("http://" + host + redirect_url + '?order_number=' + order.order_number + '&payment_id='+payment.payment_id)
                 except:
                     order.status = PaymentStatus.FAILURE
                     # if there is an error while capturing payment.
