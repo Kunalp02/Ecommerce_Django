@@ -15,6 +15,9 @@ from carts.views import _cart_id
 from carts.models import Cart, CartItem
 import requests
 # Create your views here.
+
+
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -62,20 +65,23 @@ def login(request):
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+                print("checking cart is exist or not ", is_cart_item_exists)
 
                  # Get the cart items from the user to access his product variations
                 user_cart_item = CartItem.objects.filter(user=user)
-                # print(user_cart_item)
+                print(user_cart_item)
                 cart_item = CartItem.objects.filter(cart=cart)
-                # print(cart_item)
+                print(cart_item)
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart = cart)
                     user_cart_item = CartItem.objects.filter(user=user)
+                    print('items printing')
 
                     for item in cart_item:
-                        item.user = user
-                        item.save()
-
+                        exist_in_user = CartItem.objects.get(user=user, product_name=item)
+                        print(exist_in_user)
+                        item.user=user
+                        item.save()   
             except:
                 print("Entering inside except block")
                 pass

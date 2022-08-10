@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from store.models import Product
+from category.models import Category
+
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -19,8 +21,11 @@ client = razorpay.Client(
 def home(request):
     print(request.path)
     products = Product.objects.all().filter(is_available=True)
+    categories = Category.objects.all()
+    print(categories)
     context = {
-        'products' : products,
+        'products' : products[:4],
+        'categories' : categories,
     }
 
     return render(request, 'home.html', context)
