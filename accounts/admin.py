@@ -21,7 +21,6 @@ class UserProfileAdmin(admin.ModelAdmin):
     
     thumbnail.short_description = 'Profile Picture'
     list_display = ('thumbnail', 'user', 'city', 'state', 'country')
-    list_display_links = ()
 
 
 
