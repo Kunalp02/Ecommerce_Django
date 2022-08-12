@@ -67,13 +67,11 @@ def login(request):
             try:
                 cart = Cart.objects.get(cart_id=_cart_id(request))
                 is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-                print("checking cart is exist or not ", is_cart_item_exists)
 
                  # Get the cart items from the user to access his product variations
                 user_cart_item = CartItem.objects.filter(user=user)
-                print(user_cart_item)
                 cart_item = CartItem.objects.filter(cart=cart)
-                print(cart_item)
+
                 if is_cart_item_exists:
                     cart_item = CartItem.objects.filter(cart = cart)
                     user_cart_item = CartItem.objects.filter(user=user)
