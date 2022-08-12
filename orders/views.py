@@ -127,14 +127,14 @@ def order_complete(request):
 
     CartItem.objects.filter(user=request.user).delete()
 
-    # mail_subject = 'Thank you for your order'
-    # message = render_to_string('orders/order_received_email.html', {
-    #     'user': request.user,
-    #     'order': order
-    # })
-    # to_email = request.user.email
-    # send_email = EmailMessage(mail_subject, message, to=[to_email])
-    # send_email.send()
+    mail_subject = 'Thank you for your order'
+    message = render_to_string('orders/order_received_email.html', {
+        'user': request.user,
+        'order': order
+    })
+    to_email = request.user.email
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
 
     try:
         order = Order.objects.get(order_number=order_number, is_ordered=True)

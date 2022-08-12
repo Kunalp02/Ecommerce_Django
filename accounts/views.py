@@ -102,7 +102,7 @@ def login(request):
                 pass  
             return redirect('dashboard')
         else:
-            messages.error(request, 'Invalid login credentials')
+            messages.warning(request, 'Invalid login credentials')
             return redirect('login')
 
     return render(request, 'accounts/login.html')

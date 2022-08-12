@@ -54,34 +54,33 @@ def callback(request):
        
             if result is not None:
                 order = Order.objects.get(razorpay_order_id = razorpay_order_id)
-                amount = order.order_total * 100  # Rs. 200
+                print(order.order_total)
+                amount = int(order.order_total) * 100  # Rs. 200
                 print(amount) # 30599898.0
-                # try:
+                try:
                     # capture the payemt
-                client.payment.capture(payment_id, amount)
-                print(client.payment.capture(payment_id, amount))
+                    client.payment.capture(payment_id, amount)
+                    order.status = PaymentStatus.SUCCESS
+                    payment = Payment(user=order.user, payment_id = payment_id, payment_method='razorpay', amount_paid = order.order_total, status=order.status)
+                    payment.save()
+                    order.payment = payment
+                    order.razorpay_order_id = razorpay_order_id
+                    order.razorpay_payment_id = payment_id
+                    order.razorpay_signature_id = signature
+                    order.is_ordered = True
+                    order.save()
 
-                order.status = PaymentStatus.SUCCESS
-                payment = Payment(user=order.user, payment_id = payment_id, payment_method='razorpay', amount_paid = order.order_total, status=order.status)
-                payment.save()
-                order.payment = payment
-                order.razorpay_order_id = razorpay_order_id
-                order.razorpay_payment_id = payment_id
-                order.razorpay_signature_id = signature
-                order.is_ordered = True
-                order.save()
-
-                # render success page on successful caputre of payment
-                host = request.META['HTTP_HOST']
-                print(host)
-                redirect_url = '/orders/order_complete/'
-                print(f"'http://' + {host} + {redirect_url} + '?order_number=' + {order.order_number} + '&payment_id='+ {payment.payment_id}")
-                return HttpResponseRedirect("http://" + host + redirect_url + '?order_number=' + order.order_number + '&payment_id='+payment.payment_id)
-                # except:
-                #     order.status = PaymentStatus.FAILURE
-                #     print('payment fail')
-                #     # if there is an error while capturing payment.
-                #     return render(request, 'orders/paymentfail.html')
+                    # render success page on successful caputre of payment
+                    host = request.META['HTTP_HOST']
+                    print(host)
+                    redirect_url = '/orders/order_complete/'
+                    print(f"'http://' + {host} + {redirect_url} + '?order_number=' + {order.order_number} + '&payment_id='+ {payment.payment_id}")
+                    return HttpResponseRedirect("http://" + host + redirect_url + '?order_number=' + order.order_number + '&payment_id='+payment.payment_id)
+                except:
+                    order.status = PaymentStatus.FAILURE
+                    print('payment fail')
+                    # if there is an error while capturing payment.
+                    return render(request, 'orders/paymentfail.html')
             else:
                 order.status = PaymentStatus.FAILURE
                 # if signature verification fails.
