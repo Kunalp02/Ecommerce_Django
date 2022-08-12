@@ -61,7 +61,7 @@
 		<div class="col-md-3">
 			<div class="card card-product-grid">
 				<h2>{{category.images.url}}</h2>
-				<a href="{{ category.get_url }}" class="img-wrap"> <img src="{{category.images.url}}">{{category.images.url}} </a>
+				<a href="{{ category.get_url }}" class="img-wrap"> <img src="{{category.cat_image.url}}"></a>
 				<figcaption class="info-wrap">
 					<a href="{{ category.get_url }}" class="title">{{ category.category_name }} </a>
 				</figcaption>
@@ -71,10 +71,7 @@
 	</div><!-- container // -->
 	</section>
 
-{% comment %} 
-	{% for category in links %}
-    <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
-    {% endfor %}  {% endcomment %}
+
 <!-- ========================= SECTION  END// ========================= -->
 
 <section class="section-intro padding-y-sm">

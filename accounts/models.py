@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
-
 class MyAccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
         if not email:
@@ -67,3 +66,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, add_label):
         return True
+
+    def name(self):
+        return f'{self.first_name} {self.last_name}' 
+
+
