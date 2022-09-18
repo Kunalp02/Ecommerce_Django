@@ -13,7 +13,6 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
-
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
 import requests
@@ -33,7 +32,11 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone_number = phone_number
             user.save()
-
+            # address_line_1
+            # address_line_2
+            # city = models.
+            # state = models
+            # country = mode
             # USER ACTIVATION
             current_site = get_current_site(request)
             mail_subject = 'Please activate your account'
@@ -86,6 +89,7 @@ def login(request):
                 print("Entering inside except block")
                 pass
             auth.login(request, user)
+            
             messages.success(request, 'You are now logged in.')
             url = request.META.get('HTTP_REFERER')
             try:
@@ -98,7 +102,7 @@ def login(request):
                 return redirect('dashboard')
             except:
                 pass  
-            return redirect('dashboard')
+            return redirect('store')
         else:
             messages.warning(request, 'Invalid login credentials')
             return redirect('login')
@@ -135,7 +139,10 @@ def dashboard(request):
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     order_count = orders.count()
 
+    
     userprofile = UserProfile.objects.get(user_id=request.user.id)
+
+
 
     context = {
         'order_count': order_count,

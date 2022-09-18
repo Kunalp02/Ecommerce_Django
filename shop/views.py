@@ -35,7 +35,6 @@ def home(request):
 def callback(request):
     # only accept POST request.
     if request.method == "POST":
-        
             # get the required parameters from post request.
             payment_id = request.POST.get('razorpay_payment_id', '')
             razorpay_order_id = request.POST.get('razorpay_order_id', '')

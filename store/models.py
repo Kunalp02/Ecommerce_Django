@@ -4,6 +4,9 @@ from django.urls import reverse
 from accounts.models import Account 
 from django.db.models import Avg, Count
 
+
+
+
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
@@ -52,4 +55,45 @@ class ReviewRating(models.Model):
     def __str__(self):
         return self.subject
 
+    
+# class ProductGallery(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     image = models.ImageField(upload_to="store/products", max_length=255)
+
+#     def __str__(self):
+#         return self.product.product_name
+
+#     class Meta:
+#         verbose_name = 'productgallery'
+#         verbose_name_plural = 'Product Gallery'
+
+
+
+class FeaturesByProduct(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    line1 = models.TextField(max_length=40 , blank=True, null=True)
+    line2 = models.TextField(max_length=40 , blank=True, null=True)
+    line3 = models.TextField(max_length=40 , blank=True, null=True)
+    line4 = models.TextField(max_length=40 , blank=True, null=True)
+
+    
+    class Meta:
+        verbose_name = 'Feature'
+        verbose_name_plural = 'Features'
+
+
+
+
+
+    # class Features(models.Model):
+    # line1 = models.TextField(max_length=40 , blank=True, null=True)
+    # line2 = models.TextField(max_length=40 , blank=True, null=True)
+    # line3 = models.TextField(max_length=40 , blank=True, null=True)
+    # line4 = models.TextField(max_length=40 , blank=True, null=True)
+
+    
+    # class Meta:
+    #     verbose_name = 'Feature'
+    #     verbose_name_plural = 'Features'
     

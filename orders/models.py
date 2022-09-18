@@ -18,26 +18,26 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
-    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    order_number = models.CharField(max_length=40, null=False, blank=False)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15)
-    email = models.EmailField(max_length=50)
-    address_line_1 = models.CharField(max_length=100)
-    address_line_2 = models.CharField(max_length=100, blank=True)
-    country = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    order_note = models.CharField(max_length=100, blank=True)
-    order_total = models.FloatField()
-    tax = models.FloatField()
-    ip = models.CharField(blank=True, max_length=20)
-    is_ordered = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(_("Payment Status"),
+    payment         = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
+    user            = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    order_number    = models.CharField(max_length=40, null=False, blank=False)
+    first_name      = models.CharField(max_length=50)
+    last_name       = models.CharField(max_length=50)
+    phone           = models.CharField(max_length=15)
+    email           = models.EmailField(max_length=50)
+    address_line_1  = models.CharField(max_length=100)
+    address_line_2  = models.CharField(max_length=100, blank=True)
+    country         = models.CharField(max_length=50)
+    state           = models.CharField(max_length=50)
+    city            = models.CharField(max_length=50)
+    order_note      = models.CharField(max_length=100, blank=True)
+    order_total     = models.FloatField()
+    tax             = models.FloatField()
+    ip              = models.CharField(blank=True, max_length=20)
+    is_ordered      = models.BooleanField(default=False)
+    created_at      = models.DateTimeField(auto_now_add=True)
+    updated_at      = models.DateTimeField(auto_now=True)
+    status          = models.CharField(_("Payment Status"),
                                 default=PaymentStatus.PENDING,
                                 max_length=254,
                                 blank=False,

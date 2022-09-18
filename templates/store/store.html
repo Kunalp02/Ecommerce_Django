@@ -53,12 +53,14 @@
                 </header>
                 <div class="filter-content collapse show" id="collapse_3" style="">
                     <div class="card-body">
-                        
+
+                    <form action="{% url 'store' %}" method="POST">
+                        {% csrf_token %}
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                          <label>Min</label>
+                          <label name="min">Min</label>
                           <!-- <input class="form-control" placeholder="$0" type="number"> -->
-                              <select class="mr-2 form-control">
+                              <select class="mr-2 form-control" name="select_min" id="mrange">
                                 <option value="0">₹0</option>
                                 <option value="50">₹50</option>
                                 <option value="100">₹100</option>
@@ -69,8 +71,8 @@
                             </select>
                         </div>
                         <div class="form-group text-right col-md-6">
-                          <label>Max</label>
-                              <select class="mr-2 form-control">
+                          <label name="max">Max</label>
+                              <select class="mr-2 form-control" name="select_max" id="Mrange">
                                 <option value="50">₹50</option>
                                 <option value="100">₹100</option>
                                 <option value="150">₹150</option>
@@ -81,9 +83,11 @@
                             </select>
                         </div>
                         </div> <!-- form-row.// -->
-                        <button class="btn btn-block btn-primary">Apply</button>
+                        <button type="submit" onClick="range()" class="btn btn-block btn-primary">Apply</button>
+                    </form>
                     </div><!-- card-body.// -->
                 </div>
+                </form>
             </article> <!-- filter-group .// -->
             
         </div> <!-- card.// -->
@@ -159,6 +163,23 @@
         
         </div> <!-- container .//  -->
         </section>
+        <script>
+
+            function range(){
+                var select_min = document.getElementById('mrange');
+                var value_min = select_min.options[select_min.selectedIndex].value;
+                var select_max = document.getElementById('Mrange');
+                var value_max = select_max.options[select_max.selectedIndex].value;
+
+                console.log(value_min);
+                console.log(value_max); 
+ 
+               
+
+            }
+        </script>
+
+
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 {% endblock  %}

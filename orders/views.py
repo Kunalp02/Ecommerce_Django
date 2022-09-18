@@ -15,7 +15,6 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 def payments(request):
-
     return render(request, 'orders/payments.html')
 
 

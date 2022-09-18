@@ -1,9 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ReviewRating
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
+from .models import Product, ReviewRating, FeaturesByProduct
 from category.models import Category
 from carts.models import CartItem
 from django.db.models import Q
-
+from django.views.decorators.csrf import csrf_exempt
 from carts.views import _cart_id
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse
@@ -12,16 +12,28 @@ from django.contrib import messages
 from orders.models import OrderProduct
 
 
-
+@csrf_exempt
 def store(request, category_slug=None):
+    select_min = 0
+    select_max = 5000
+    if request.method == 'POST':
+        select_min = request.POST.get('select_min')
+        select_max = request.POST.get('select_max')
+        print(select_min)
+        print(select_max)
+
     categories = None
     products = None
 
     if category_slug != None:
         # it will bring categories if found other wise it will show 404 Error
         categories = get_object_or_404(Category, slug=category_slug)
+        
         products = Product.objects.filter(
-            category=categories, is_available=True)
+            category=categories, is_available=True, price= Q(price__lt=50) and Q(price__gt=1000))
+        print(products)
+       
+        
         product_count = products.count()
         paginator = Paginator(products, 4)
         page = request.GET.get('page')
@@ -41,6 +53,11 @@ def store(request, category_slug=None):
 
 
 def product_detail(request, category_slug, product_slug):
+    single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+    features = FeaturesByProduct.objects.all()
+    print(features)
+    features_filter= FeaturesByProduct.objects.get(product_id=single_product.id)
+    print(features_filter.__dict__)
     try:
         single_product = Product.objects.get(
             category__slug=category_slug, slug=product_slug)
@@ -64,6 +81,7 @@ def product_detail(request, category_slug, product_slug):
         'in_cart': in_cart,
         'orderproduct' : orderproduct,
         'reviews' : reviews,
+        'features_filter' : features_filter,
     }
     return render(request, 'store/product_detail.html', context)
 
